@@ -1,4 +1,4 @@
-readZincGage
+ReadZincGage
 ==========
 
 Read from an Elcometer Digital Zinc Mil Gage via virtual serial connection
