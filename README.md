@@ -1,7 +1,10 @@
 ReadZincGage
 ==========
 
-Read from an Elcometer Digital Zinc Mil Gage via virtual serial connection
+This block will read from an Elcometer digital zinc mil gage via virtual serial connection
+In it's current state, this block assumes that the device is connected via 
+bluetooth and will only start if a virtual serial port can be opened.
+
 
 Properties
 --------------
@@ -21,11 +24,11 @@ None
 
 Input
 -------
-Any list of signals.
+Reading from digital zinc gage
 
 Output
 ---------
-Same list of signals as input 
+A signal containing the output reading of the gage in bytes. 
 
 -------------------------------------------------------------------------------
 
