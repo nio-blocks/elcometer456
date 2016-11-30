@@ -2,7 +2,7 @@ ReadZincGage
 ==========
 
 This block will read from an Elcometer digital zinc mil gage via virtual serial connection
-In it's current state, this block assumes that the device is connected via 
+In its current state, this block assumes that the device is connected via 
 bluetooth and will only start if a virtual serial port can be opened.
 
 
