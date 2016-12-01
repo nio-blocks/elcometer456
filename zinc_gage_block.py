@@ -18,9 +18,12 @@ class ReadZincGage(Block):
         super().__init__()
         self._serial = None
 
+    def configure(self, context):
+        super().configure(context)
+        self._serial = serial.Serial(self.port(), self.baudrate(), timeout=self.timeout())
+
     def start(self):
         super().start()
-        self._serial = serial.Serial(self.port(), self.baudrate(), timeout=self.timeout())
         self._thread = spawn(self._read_gage)
 
     def stop(self):
