@@ -14,7 +14,7 @@ class TestGageRead(NIOBlockTestCase):
             mock_serial.return_value.readline.return_value = b'sample response'
             mock_serial.return_value.isOpen.return_value = True
             self.configure_block(blk, {})
-            blk.start()
+        blk.start()
         from time import sleep
         sleep(1)
         blk.stop()
