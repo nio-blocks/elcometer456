@@ -5,7 +5,7 @@ from nio.properties import VersionProperty, StringProperty, IntProperty
 from nio.util.threading.spawn import spawn
 
 
-class ReadZincGage(Block):
+class Elcometer456(Block):
 
     """ Read from an Elcometer digital bluetooth gage """
 

@@ -1,5 +1,5 @@
-ReadZincGage
-==========
+Elcometer456
+============
 
 This block will read from an Elcometer digital zinc mil gage via virtual serial connection
 In its current state, this block assumes that the device is connected via 
