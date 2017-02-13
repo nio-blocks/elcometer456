@@ -27,6 +27,8 @@ Input
 -------
 Reading from digital zinc gage
 
+Ex:  b'   3.14 mil  N1    \r\n'
+
 Output
 ---------
 A signal containing the output reading of the gage (string) in mils.

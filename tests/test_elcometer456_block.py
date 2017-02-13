@@ -20,6 +20,6 @@ class TestElcometer456(NIOBlockTestCase):
         blk.stop()
         self.assertDictEqual(
             self.last_notified[DEFAULT_TERMINAL][0].to_dict(), {
-            "reading": "3.14"
+            "value": 3.14
         })
         blk._serial.write.assert_called_with(b"O")

@@ -39,7 +39,7 @@ class Elcometer456(Block):
         self.logger.debug('Start reading')
         while self._serial.isOpen() == True:
             self.logger.debug('Waiting for reading')
-            read = str(self._serial.readline()).split()[1]
-            self.notify_signals([Signal({'reading': read})])
-            self.logger.debug('Gage Reading: ' + read + ' mils')
+            read = float(str(self._serial.readline()).split()[1])
+            self.notify_signals([Signal({'value': read})])
+            self.logger.debug('Gage Reading: ' + str(read) + ' mils')
             self._serial.write(b"O")
