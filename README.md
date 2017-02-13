@@ -5,6 +5,7 @@ This block will read from an Elcometer digital zinc mil gage via virtual serial 
 In its current state, this block assumes that the device is connected via
 bluetooth and will only start if a virtual serial port can be opened.
 
+NOTE:  Block can be replaced with a more robust serial read block
 
 Properties
 --------------
