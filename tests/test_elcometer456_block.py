@@ -11,7 +11,7 @@ class TestElcometer456(NIOBlockTestCase):
     def test_default_read(self):
         blk = Elcometer456()
         with patch('serial.Serial') as mock_serial:
-            mock_serial.return_value.readline.return_value = b'sample response'
+            mock_serial.return_value.readline.return_value = b'   3.14 mil  N1    \r\n'
             mock_serial.return_value.isOpen.return_value = True
             self.configure_block(blk, {})
         blk.start()
@@ -20,6 +20,6 @@ class TestElcometer456(NIOBlockTestCase):
         blk.stop()
         self.assertDictEqual(
             self.last_notified[DEFAULT_TERMINAL][0].to_dict(), {
-            "bytes": b"sample response"
+            "value": 3.14
         })
         blk._serial.write.assert_called_with(b"O")

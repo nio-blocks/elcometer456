@@ -22,6 +22,11 @@ class Elcometer456(Block):
         super().configure(context)
         self._serial = serial.Serial(self.port(), self.baudrate(), timeout=self.timeout())
 
+    def process_signals(self, signals):
+        for signal in signals:
+            self._read(signal)
+        self.notify_signals(signals)
+
     def start(self):
         super().start()
         self._thread = spawn(self._read_gage)
@@ -34,7 +39,7 @@ class Elcometer456(Block):
         self.logger.debug('Start reading')
         while self._serial.isOpen() == True:
             self.logger.debug('Waiting for reading')
-            read = self._serial.readline()
-            self.notify_signals([Signal({'bytes': read})])
-            self.logger.debug('Gage Reading: ' + str(read))
+            read = float(str(self._serial.readline()).split()[1])
+            self.notify_signals([Signal({'value': read})])
+            self.logger.debug('Gage Reading: ' + str(read) + ' mils')
             self._serial.write(b"O")
