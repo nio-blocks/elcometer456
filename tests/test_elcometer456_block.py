@@ -23,3 +23,19 @@ class TestElcometer456(NIOBlockTestCase):
             "value": 3.14
         })
         blk._serial.write.assert_called_with(b"O")
+
+    def test_bad_reading(self):
+        blk = Elcometer456()
+        with patch('serial.Serial') as mock_serial:
+            mock_serial.return_value.readline.return_value = b'     ---      F1    \r\n'
+            mock_serial.return_value.isOpen.return_value = True
+            self.configure_block(blk, {})
+        blk.start()
+        from time import sleep
+        sleep(1)
+        blk.stop()
+        self.assertDictEqual(
+            self.last_notified[DEFAULT_TERMINAL][0].to_dict(), {
+            "value": b''
+        })
+        blk._serial.write.assert_called_with(b"O")
