@@ -18,6 +18,7 @@ class Elcometer456(Block):
         super().__init__()
         self._serial = None
         self._thread = None
+        self._stopping = False
 
     def configure(self, context):
         super().configure(context)
@@ -28,6 +29,7 @@ class Elcometer456(Block):
         self._thread = spawn(self._read_gage)
 
     def stop(self):
+        self._stopping = True
         self._serial.close()
         self._thread.join(1)
         super().stop()
@@ -35,8 +37,15 @@ class Elcometer456(Block):
     def _read_gage(self):
         self.logger.debug('Start reading')
         while self._serial.isOpen() == True:
+            if self._stopping:
+                return
             self.logger.debug('Waiting for reading')
-            raw = self._serial.readline()
+            try:
+                raw = self._serial.readline()
+            except:
+                if not self._stopping:
+                    self.logger.warning('serial failed read', exc_info=True)
+                continue
             self._serial.write(b"O")
             read = b''
             if str(raw).split()[1] != '---':
