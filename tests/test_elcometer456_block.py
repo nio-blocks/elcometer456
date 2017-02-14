@@ -33,9 +33,9 @@ class TestElcometer456(NIOBlockTestCase):
         e.wait(1)
         blk.stop()
         self.assertDictEqual(
-                 self.last_notified[DEFAULT_TERMINAL][0].to_dict(), {
-                 "value": self.value
-             })
+            self.last_notified[DEFAULT_TERMINAL][0].to_dict(), {
+            "value": self.value
+        })
         blk._serial.write.assert_called_with(b"O")
 
 
