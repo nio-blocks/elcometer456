@@ -1,9 +1,11 @@
 Elcometer456
 ============
 
-This block will read from an Elcometer digital zinc mil gage via virtual serial connection
-In its current state, this block assumes that the device is connected via
-bluetooth and will only start if a virtual serial port can be opened.
+This block will read from an Elcometer digital zinc mil gage via virtual serial
+connection.
+
+If the device is not paired with the n.io host, then the block will retry
+connecting every 10 seconds until the bluetooth device is paired.
 
 NOTE:  Block can be replaced with a more robust serial read block
 
@@ -31,6 +33,6 @@ Ex:  b'   3.14 mil  N1    \r\n'
 
 Output
 ---------
-A signal containing the output reading of the gage (string) in mils.
+A signal containing the output reading of the gage (float) in mils.
 
 -------------------------------------------------------------------------------

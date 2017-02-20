@@ -1,4 +1,5 @@
 import serial
+from time import sleep
 from nio.signal.base import Signal
 from nio.block.base import Block
 from nio.properties import VersionProperty, StringProperty, IntProperty
@@ -17,22 +18,36 @@ class Elcometer456(Block):
     def __init__(self):
         super().__init__()
         self._serial = None
-        self._thread = None
+        self._connect_thread = None
         self._stopping = False
-
-    def configure(self, context):
-        super().configure(context)
-        self._serial = serial.Serial(self.port(), self.baudrate(), timeout=self.timeout())
 
     def start(self):
         super().start()
-        self._thread = spawn(self._read_gage)
+        self._connect_thread = spawn(self._connect_gage)
 
     def stop(self):
         self._stopping = True
-        self._serial.close()
-        self._thread.join(1)
+        if self._serial:
+            self._serial.close()
+        if self._connect_thread:
+            self._connect_thread.join(1)
         super().stop()
+
+    def _connect_gage(self):
+        while True:
+            if self._stopping:
+                return
+            try:
+                self._serial = serial.Serial(self.port(), self.baudrate(),
+                    timeout=self.timeout())
+                self.logger.info('Pairing Successful')
+            except:
+                self.logger.warning('Pairing attempt failed. Retry in 10 seconds',
+                    exc_info = False)
+                sleep(10)
+                continue
+            break
+        self._read_gage()
 
     def _read_gage(self):
         self.logger.debug('Start reading')
@@ -42,13 +57,19 @@ class Elcometer456(Block):
             self.logger.debug('Waiting for reading')
             try:
                 raw = self._serial.readline()
-            except:
+            except serial.SerialException:
                 if not self._stopping:
-                    self.logger.warning('serial failed read', exc_info=True)
+                    self.logger.warning('Closing serial connection')
+                    self._serial.close()
+                continue
+            except:
+                self.logger.warning('Exception caught', exc_info=False)
                 continue
             self._serial.write(b"O")
-            read = b''
-            if str(raw).split()[1] != '---':
+            try:
                 read = float(str(raw).split()[1])
+            except:
+                read = None
             self.notify_signals([Signal({'value': read})])
             self.logger.debug('Gage Reading: ' + str(read) + ' mils')
+        self._connect_gage()
