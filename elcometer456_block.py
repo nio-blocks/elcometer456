@@ -28,10 +28,10 @@ class Elcometer456(Block):
 
     def stop(self):
         self._stopping = True
-        if self._connect_thread:
-            self._connect_thread.join(1)
         if self._serial:
             self._serial.close()
+        if self._connect_thread:
+            self._connect_thread.join(1)
         if self._read_thread:
             self._read_thread.join(1)
         super().stop()
@@ -41,14 +41,16 @@ class Elcometer456(Block):
             if self._stopping:
                 return
             try:
-                self._serial = serial.Serial(self.port(), self.baudrate(), timeout=self.timeout())
+                self._serial = serial.Serial(self.port(), self.baudrate(),
+                    timeout=self.timeout())
                 self.logger.info('Pairing Successful')
             except:
-                self.logger.warning('Pairing attempt failed', exc_info = False)
+                self.logger.warning('Pairing attempt failed. Retry in 10 seconds',
+                    exc_info = False)
                 sleep(10)
                 continue
             break
-        self._read_thread = spawn(self._read_gage)
+        self._read_gage()
 
     def _read_gage(self):
         self.logger.debug('Start reading')
@@ -60,13 +62,17 @@ class Elcometer456(Block):
                 raw = self._serial.readline()
             except serial.SerialException:
                 if not self._stopping:
-                    self.logger.info('Closing serial connection')
+                    self.logger.warning('Closing serial connection')
                     self._serial.close()
                 continue
+            except:
+                self.logger.warning('Exception caught', exc_info=False)
+                continue
             self._serial.write(b"O")
-            read = 0
-            if str(raw).split()[1] != '---':
+            try:
                 read = float(str(raw).split()[1])
+            except:
+                read = None
             self.notify_signals([Signal({'value': read})])
             self.logger.debug('Gage Reading: ' + str(read) + ' mils')
         self._connect_gage()

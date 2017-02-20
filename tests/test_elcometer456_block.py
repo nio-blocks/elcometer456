@@ -44,4 +44,9 @@ class TestElcometer456(NIOBlockTestCase):
 class TestElcometer456_BadData(TestElcometer456):
 
     reading = b'     ---      F1    \r\n'
-    value = 0
+    value = None
+
+class TestElcometer456_ReallyBadData(TestElcometer456):
+
+    reading = b'TestingWeirdStuff\r\n'
+    value = None
