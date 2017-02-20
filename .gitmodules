@@ -1,0 +1,3 @@
+[submodule "blocks/socketio"]
+	path = blocks/socketio
+	url = git@github.com:nio-blocks/socketio.git
