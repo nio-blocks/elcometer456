@@ -19,7 +19,6 @@ class Elcometer456(Block):
         super().__init__()
         self._serial = None
         self._connect_thread = None
-        self._read_thread = None
         self._stopping = False
 
     def start(self):
@@ -32,8 +31,6 @@ class Elcometer456(Block):
             self._serial.close()
         if self._connect_thread:
             self._connect_thread.join(1)
-        if self._read_thread:
-            self._read_thread.join(1)
         super().stop()
 
     def _connect_gage(self):
