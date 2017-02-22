@@ -68,12 +68,12 @@ class Elcometer456(Block):
             except:
                 self.logger.warning('Exception caught', exc_info=False)
                 continue
-            self._serial.write(b"O")
             try:
                 read = float(str(raw).split()[1])
             except:
                 read = None
             if read:
+                self._serial.write(b"O")
                 self.notify_signals([Signal({'value': read})])
                 self.logger.debug('Gage Reading: ' + str(read) + ' mils')
         self._connect_gage()
