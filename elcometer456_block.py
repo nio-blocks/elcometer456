@@ -13,7 +13,7 @@ class Elcometer456(Block):
     version = VersionProperty('0.1.0')
     port = StringProperty(title='Port', default='COM7')
     baudrate = IntProperty(title='Baud Rate', default=9600)
-    timeout = IntProperty(title='Timeout', default=10)
+    timeout = IntProperty(title='Timeout', default=1, visible=False)
 
     def __init__(self):
         super().__init__()
@@ -57,7 +57,6 @@ class Elcometer456(Block):
         while self._serial.isOpen() == True:
             if self._stopping:
                 return
-            self.logger.debug('Waiting for reading')
             try:
                 raw = self._serial.readline()
             except serial.SerialException:
@@ -70,10 +69,10 @@ class Elcometer456(Block):
                 continue
             try:
                 read = float(str(raw).split()[1])
+                self._serial.write(b"O")
             except:
                 read = None
             if read:
-                self._serial.write(b"O")
                 self.notify_signals([Signal({'value': read})])
                 self.logger.debug('Gage Reading: ' + str(read) + ' mils')
         self._connect_gage()
