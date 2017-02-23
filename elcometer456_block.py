@@ -13,7 +13,7 @@ class Elcometer456(Block):
     version = VersionProperty('0.1.0')
     port = StringProperty(title='Port', default='COM7')
     baudrate = IntProperty(title='Baud Rate', default=9600)
-    timeout = IntProperty(title='Timeout', default=100)
+    timeout = IntProperty(title='Timeout', default=1, visible=False)
 
     def __init__(self):
         super().__init__()
@@ -38,12 +38,14 @@ class Elcometer456(Block):
             if self._stopping:
                 return
             try:
-                self._serial = serial.Serial(self.port(), self.baudrate(),
-                    timeout=self.timeout())
+                self._serial = serial.Serial(
+                    self.port(), self.baudrate(),timeout=self.timeout()
+                )
                 self.logger.info('Pairing Successful')
             except:
-                self.logger.warning('Pairing attempt failed. Retry in 10 seconds',
-                    exc_info = False)
+                self.logger.warning(
+                    'Pairing attempt failed. Retry in 10 seconds'
+                )
                 sleep(10)
                 continue
             break
@@ -54,7 +56,6 @@ class Elcometer456(Block):
         while self._serial.isOpen() == True:
             if self._stopping:
                 return
-            self.logger.debug('Waiting for reading')
             try:
                 raw = self._serial.readline()
             except serial.SerialException:
@@ -65,11 +66,13 @@ class Elcometer456(Block):
             except:
                 self.logger.warning('Exception caught', exc_info=False)
                 continue
-            self._serial.write(b"O")
+            if raw:
+                self._serial.write(b"O")
             try:
                 read = float(str(raw).split()[1])
             except:
                 read = None
-            self.notify_signals([Signal({'value': read})])
-            self.logger.debug('Gage Reading: ' + str(read) + ' mils')
+            if read:
+                self.notify_signals([Signal({'value': read})])
+                self.logger.debug('Gage Reading: ' + str(read) + ' mils')
         self._connect_gage()
