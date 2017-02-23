@@ -44,8 +44,7 @@ class Elcometer456(Block):
                 self.logger.info('Pairing Successful')
             except:
                 self.logger.warning(
-                    'Pairing attempt failed. Retry in 10 seconds',
-                    exc_info = False
+                    'Pairing attempt failed. Retry in 10 seconds'
                 )
                 sleep(10)
                 continue
@@ -67,9 +66,10 @@ class Elcometer456(Block):
             except:
                 self.logger.warning('Exception caught', exc_info=False)
                 continue
+            if raw:
+                self._serial.write(b"O")
             try:
                 read = float(str(raw).split()[1])
-                self._serial.write(b"O")
             except:
                 read = None
             if read:
