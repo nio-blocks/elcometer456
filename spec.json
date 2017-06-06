@@ -1,0 +1,23 @@
+{
+  "nio/Elcometer456": {
+    "Commands": {},
+    "Dependencies": [
+      "-   [pyserial](https://pypi.python.org/pypi/pyserial)"
+    ],
+    "Input": "Reading from digital zinc gage\nEx:  b'   3.14 mil  N1    \\r\\n'",
+    "Output": "A signal containing the output reading of the gage (float) in mils. If `---` is\nread no signals are notified.",
+    "Category": "Hardware",
+    "Properties": {
+      "port": {
+        "type": "str",
+        "description": "Serial port to read from"
+      },
+      "baudrate": {
+        "type": "int",
+        "description": "Baud rate of serial port"
+      }
+    },
+    "Description": "This block will read from an Elcometer digital zinc mil gage via virtual serial\nconnection.\nIf the device is not paired with the n.io host, then the block will retry\nconnecting every 10 seconds until the bluetooth device is paired.",
+    "Version": "1.0.0"
+  }
+}

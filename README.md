@@ -10,8 +10,8 @@ connecting every 10 seconds until the bluetooth device is paired.
 Properties
 --------------
 
--   port (str): Serial port to read from
--   baudrate (int): Baud rate of serial port
+-   port (type=str): Serial port to read from
+-   baudrate (type=int): Baud rate of serial port
 
 Dependencies
 ----------------
@@ -32,5 +32,3 @@ Output
 ---------
 A signal containing the output reading of the gage (float) in mils. If `---` is
 read no signals are notified.
-
--------------------------------------------------------------------------------
