@@ -1,10 +1,33 @@
 {
   "nio/Elcometer456": {
-    "version": "0.0.1",
-    "description": "",
+    "version": "0.1.0",
+    "description": "This block will read from an Elcometer digital zinc mil gage via virtual serial connection. If the device is not paired with the n.io host, then the block will retry connecting every 10 seconds until the bluetooth device is paired.",
+    "properties": {
+      "baudrate": {
+        "title": "Baud Rate",
+        "type": "IntType",
+        "description": "Baud rate of serial port",
+        "default": 9600
+      },
+      "port": {
+        "title": "Port",
+        "type": "StringType",
+        "description": "Serial port to read from",
+        "default": "COM7"
+      },
+      "timeout": {
+        "title": "Timeout",
+        "type": "IntType",
+        "description": "Timeout for reading from serial port",
+        "default": 1
+      }
+    },
     "inputs": {},
-    "outputs": {},
-    "properties": {},
+    "outputs": {
+      "default": {
+        "description": "A signal containing the output reading of the gage (float) in mils. If `---` is read no signals are notified."
+      }
+    },
     "commands": {}
   }
 }

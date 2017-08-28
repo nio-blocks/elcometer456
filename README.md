@@ -8,27 +8,24 @@ If the device is not paired with the n.io host, then the block will retry
 connecting every 10 seconds until the bluetooth device is paired.
 
 Properties
---------------
+----------
+- **baudrate**: Baud rate of serial port
+- **port**: Serial port to read from
+- **timeout**: Timeout for reading from serial port
 
--   port (type=str): Serial port to read from
--   baudrate (type=int): Baud rate of serial port
-
-Dependencies
-----------------
-
--   [pyserial](https://pypi.python.org/pypi/pyserial)
-
-Commands
-----------------
+Inputs
+------
 None
 
-Input
+Outputs
 -------
-Reading from digital zinc gage
+- **default**: A signal containing the output reading of the gage (float) in mils. If `---` is
+ read no signals are notified.
 
-Ex:  b'   3.14 mil  N1    \r\n'
+Commands
+--------
+None
 
-Output
----------
-A signal containing the output reading of the gage (float) in mils. If `---` is
-read no signals are notified.
+Dependencies
+------------
+-   [pyserial](https://pypi.python.org/pypi/pyserial)
