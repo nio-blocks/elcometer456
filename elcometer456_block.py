@@ -1,12 +1,13 @@
 import serial
 from time import sleep
+
 from nio.signal.base import Signal
-from nio.block.base import Block
+from nio import GeneratorBlock
 from nio.properties import VersionProperty, StringProperty, IntProperty
 from nio.util.threading.spawn import spawn
 
 
-class Elcometer456(Block):
+class Elcometer456(GeneratorBlock):
 
     """ Read from an Elcometer digital bluetooth gage """
 
@@ -38,9 +39,9 @@ class Elcometer456(Block):
             if self._stopping:
                 return
             try:
-                self._serial = serial.Serial(
-                    self.port(), self.baudrate(),timeout=self.timeout()
-                )
+                self._serial = serial.Serial(self.port(),
+                                             self.baudrate(),
+                                             timeout=self.timeout())
                 self.logger.info('Pairing Successful')
             except:
                 self.logger.warning(
@@ -53,7 +54,7 @@ class Elcometer456(Block):
 
     def _read_gage(self):
         self.logger.debug('Start reading')
-        while self._serial.isOpen() == True:
+        while self._serial.isOpen():
             if self._stopping:
                 return
             try:

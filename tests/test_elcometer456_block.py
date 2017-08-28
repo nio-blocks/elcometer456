@@ -1,12 +1,14 @@
 from unittest.mock import patch
-from collections import defaultdict
 from threading import Event
+
 from nio.block.terminals import DEFAULT_TERMINAL
-from nio.signal.base import Signal
 from nio.testing.block_test_case import NIOBlockTestCase
+from nio.util.discovery import not_discoverable
+
 from ..elcometer456_block import Elcometer456
 
 
+@not_discoverable
 class ReadEvent(Elcometer456):
 
     def __init__(self, event):
@@ -16,6 +18,7 @@ class ReadEvent(Elcometer456):
     def notify_signals(self, signals):
         super().notify_signals(signals)
         self._event.set()
+
 
 class TestElcometer456(NIOBlockTestCase):
 
@@ -48,15 +51,18 @@ class TestElcometer456(NIOBlockTestCase):
             # write only happens if data has been read
             blk._serial.write.assert_not_called()
 
+
 class TestElcometer456_BadData(TestElcometer456):
 
     reading = b'     ---      F1    \r\n'
     value = '---'
 
+
 class TestElcometer456_ReallyBadData(TestElcometer456):
 
     reading = b'TestingWeirdStuff\r\n'
     value = 'TestingWeirdStuff'
+
 
 class TestElcometer456_EmptyData(TestElcometer456):
 
