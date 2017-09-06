@@ -2,6 +2,9 @@
   "nio/Elcometer456": {
     "version": "0.1.0",
     "description": "This block will read from an Elcometer digital zinc mil gage via virtual serial connection. If the device is not paired with the n.io host, then the block will retry connecting every 10 seconds until the bluetooth device is paired.",
+    "categories": [
+      "Hardware"
+    ],
     "properties": {
       "baudrate": {
         "title": "Baud Rate",
