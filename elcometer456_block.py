@@ -11,7 +11,7 @@ class Elcometer456(GeneratorBlock):
 
     """ Read from an Elcometer digital bluetooth gage """
 
-    version = VersionProperty("0.1.0")
+    version = VersionProperty("0.1.1")
     port = StringProperty(title='Port', default='COM7')
     baudrate = IntProperty(title='Baud Rate', default=9600)
     timeout = IntProperty(title='Timeout', default=1, visible=False)
