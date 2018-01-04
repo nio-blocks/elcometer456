@@ -9,9 +9,9 @@ connecting every 10 seconds until the bluetooth device is paired.
 
 Properties
 ----------
-- **baudrate**: Baud rate of serial port
-- **port**: Serial port to read from
-- **timeout**: Timeout for reading from serial port
+- **baudrate**: Baud rate of serial port.
+- **port**: Serial port to read from.
+- **timeout**: Timeout for reading from serial port.
 
 Inputs
 ------
